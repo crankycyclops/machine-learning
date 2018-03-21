@@ -12,18 +12,26 @@ class VNN:
 	def __init__(self, nInputNeurons, nOutputNeurons,
 	nHiddenLayers = 2, nHiddenLayerNeurons = 3):
 
-		# Record how many neurons exist in each layer
-		self.nNeurons = []
+		# We'll create an array of neurons for each level, each of which will
+		# store a computed or assigned value.
+		self.neurons = []
 
 		for i in range(0, nHiddenLayers + 2):
-			if 0 == i:
-				self.nNeurons[i] = nInputNeurons
-			elif nHiddenLayers + 1 == i:
-				self.nNeurons[i] = nOutputNeurons
-			else:
-				self.nNeurons[i] = nHiddenLayerNeurons
 
-		# Initialize the neural network with random weights and biases
+			self.neurons[i] = []
+
+			if 0 == i:
+				nNeurons = nInputNeurons
+			elif nHiddenLayers + 1 == i:
+				nNeurons = nOutputNeurons
+			else:
+				nNeurons = nHiddenLayerNeurons
+
+			# Each neuron will be given a default value of 0.
+			for j in range(0, nNeurons):
+				self.neurons[i][j] = 0
+
+		# Initialize the neural network with random weights and biases.
 		self.neuralParameters = {}
 		self.neuralParameters.weights = []
 		self.neuralParameters.biases  = []
@@ -44,7 +52,7 @@ class VNN:
 
 				# Populate weights
 				self.neuralParameters.weights[i][j] = []
-				for k in range(0, self.nNeurons[i]):
+				for k in range(0, len(self.neurons[i])):
 					self.neuralParameters.weights[i][j][k] = random()
 
 	############################################################################
@@ -56,7 +64,7 @@ class VNN:
 
 		try:
 			pickle.dump({
-				'nNeurons': nNeurons,
+				'neurons': self.neurons,
 				'neuralParameters': self.neuralParameters
 			}, filename)
 
@@ -73,7 +81,7 @@ class VNN:
 
 		try:
 			network = pickle.load(filename)
-			self.nNeurons = network.nNeurons
+			self.neurons = network.neurons
 			self.neuralParameters = network.neuralParameters
 
 		except Exception as e:
