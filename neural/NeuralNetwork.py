@@ -133,6 +133,10 @@ class VNN:
 	# actual set of computed neuron values (badData) and calculates the cost,
 	# which is a mathematical way of expressing how much the actual values
 	# deviate from the expected values.
+	#
+	# When running a lot of training examples through the network as part of a
+	# single test set, the average cost should be computed, which is the average
+	# of all computeCost() results.
 	def computeCost(self, goodData, badData):
 
 		if len(goodData) != len(badData):
