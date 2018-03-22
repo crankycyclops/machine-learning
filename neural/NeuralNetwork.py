@@ -15,13 +15,13 @@ class VNN:
 	# nHiddenLayerNeurons = How many neurons exist in each hidden layer
 	# activation          = Which activation function to use on each neuron's value
 	def __init__(self, nInputNeurons, nOutputNeurons,
-	nHiddenLayers = 2, nHiddenLayerNeurons = 3, activation = 'tanh'):
+	nHiddenLayers = 2, nHiddenLayerNeurons = 3, activationName = 'tanh'):
 
-		if 'tanh' == activation:
+		if 'tanh' == activationName:
 			self.activation = activation.tanh
-		elif 'sigmoid' == activation:
+		elif 'sigmoid' == activationName:
 			self.activation = activation.sigmoid
-		elif 'linear' == activation:
+		elif 'linear' == activationName:
 			self.activation = activation.linear
 		else:
 			raise Exception("Supported activation functions include 'tanh', 'sigmoid' and 'linear'.")
@@ -32,7 +32,7 @@ class VNN:
 
 		for i in range(0, nHiddenLayers + 2):
 
-			self.neurons[i] = []
+			self.neurons.append([])
 
 			if 0 == i:
 				nNeurons = nInputNeurons
@@ -43,31 +43,31 @@ class VNN:
 
 			# Each neuron will be given a default value of 0.
 			for j in range(0, nNeurons):
-				self.neurons[i][j] = 0
+				self.neurons[i].append(0)
 
 		# Initialize the neural network with random weights and biases.
 		self.neuralParameters = {}
-		self.neuralParameters.weights = []
-		self.neuralParameters.biases  = []
+		self.neuralParameters['weights'] = []
+		self.neuralParameters['biases']  = []
 
 		for i in range(0, nHiddenLayers + 1):
 
-			self.neuralParameters.weights[i] = []
-			self.neuralParameters.biases[i]  = []
+			self.neuralParameters['weights'].append([])
+			self.neuralParameters['biases'].append([])
 
-			nCols = self.nHiddenLayerNeurons
+			nCols = nHiddenLayerNeurons
 			if nHiddenLayers == i:
-				nCols = self.nOutputNeurons
+				nCols = nOutputNeurons
 
 			for j in range(0, nCols):
 
 				# Populate biases
-				self.neuralParameters.biases[i][j] = random()
+				self.neuralParameters['biases'][i].append(random())
 
 				# Populate weights
-				self.neuralParameters.weights[i][j] = []
+				self.neuralParameters['weights'][i].append([])
 				for k in range(0, len(self.neurons[i])):
-					self.neuralParameters.weights[i][j][k] = random()
+					self.neuralParameters['weights'][i][j].append(random())
 
 	############################################################################
 
@@ -116,13 +116,13 @@ class VNN:
 
 		# Assign data to the input layer neurons.
 		for i in range(0, len(self.neurons[0])):
-			self.neurons[0][j] = data[i]
+			self.neurons[0][i] = data[i]
 
 		# Next, feed forward until we reach the output neurons.
 		for i in range(1, len(self.neurons)):
 
-			self.neurons[i] = np.dot(self.neuralParameters.weights[i - 1], self.neurons[i])
-			self.neurons[i] = np.add(self.neuralParameters.biases[i - 1], self.neurons[i])
+			self.neurons[i] = np.dot(self.neuralParameters['weights'][i - 1], self.neurons[i])
+			self.neurons[i] = np.add(self.neuralParameters['biases'][i - 1], self.neurons[i])
 			self.neurons[i] = self.activation(self.neurons[i])
 
 		# Finally, return the values of the output neurons.

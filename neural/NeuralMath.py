@@ -1,3 +1,4 @@
+import collections
 import math
 
 class activation:
@@ -5,12 +6,12 @@ class activation:
 	# Accepts either a vector (array) or scalar as input and returns the sigmoid.
 	def sigmoid(x):
 
-		if type(x) is not str and isinstance(x, collections.Sequence):
+		if type(x) is not str and hasattr(x, "__len__"):
 
 			retVal = []
 
 			for i in range(len(x)):
-				retVal[i] = 1 / (1 + math.exp(-x[i]))
+				retVal.append(1 / (1 + math.exp(-x[i])))
 
 			return retVal
 
@@ -23,16 +24,17 @@ class activation:
 	# hyperbolic tangent.
 	def tanh(x):
 
-		if type(x) is not str and isinstance(x, collections.Sequence):
+		if type(x) is not str and hasattr(x, "__len__"):
 
 			retVal = []
 
 			for i in range(len(x)):
-				retVal[i] = math.tanh(x[i])
+				retVal.append(math.tanh(x[i]))
 
 			return retVal
 
 		else:
+			print(x)
 			return math.tanh(x)
 
 	############################################################################
