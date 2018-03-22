@@ -120,8 +120,7 @@ class VNN:
 
 		# Next, feed forward until we reach the output neurons.
 		for i in range(1, len(self.neurons)):
-
-			self.neurons[i] = np.dot(self.neuralParameters['weights'][i - 1], self.neurons[i])
+			self.neurons[i] = np.dot(self.neuralParameters['weights'][i - 1], self.neurons[i - 1])
 			self.neurons[i] = np.add(self.neuralParameters['biases'][i - 1], self.neurons[i])
 			self.neurons[i] = self.activation(self.neurons[i])
 

@@ -5,7 +5,7 @@ from NeuralNetwork import VNN
 
 # Arbitrary array of input values
 data = [1, 2, 3]
-nn = VNN(3, 3)
+nn = VNN(3, 3, nHiddenLayers = 4, nHiddenLayerNeurons = 2)
 
 # Let's hope I don't hit any runtime errors!
 print(nn.predict(data))
