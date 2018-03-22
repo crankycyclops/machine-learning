@@ -127,3 +127,21 @@ class VNN:
 		# Finally, return the values of the output neurons.
 		return self.neurons[len(self.neurons) - 1]
 
+	############################################################################
+
+	# Takes as input an ideal set of output neuron values (goodData) and an
+	# actual set of computed neuron values (badData) and calculates the cost,
+	# which is a mathematical way of expressing how much the actual values
+	# deviate from the expected values.
+	def computeCost(self, goodData, badData):
+
+		if len(goodData) != len(badData):
+			raise Exception('goodData and badData must have the same number of elements.')
+
+		cost = 0
+
+		for i in range(0, len(goodData)):
+			cost += (badData[i] - goodData[i]) ** 2
+
+		return cost
+
